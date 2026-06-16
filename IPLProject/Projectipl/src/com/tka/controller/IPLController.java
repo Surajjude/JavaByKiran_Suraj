@@ -15,7 +15,6 @@ public class IPLController {
 		switch(choice) {
 		case 1:
 			service.getAllPlayer().forEach(n->System.out.println(n.getpName()));
-			System.out.println(service.getAllPlayer());
 			break;
 		case 2:
 			System.out.println("Enter the name of Team (RCB,RR,GT,SRH)");
