@@ -14,7 +14,7 @@ public class IPLDao1 {
 
 	private String url = "jdbc:postgresql://localhost:5432/jdbcdemo";
 	private String username = "postgres";
-	private String password = "Namdevrao888@";
+	private String password = "";
 	
 	private PreparedStatement ps = null;
 	private Connection conn = null;
