@@ -34,6 +34,17 @@ public class IPLService {
 		return iplDao.updateWickets(idt,wicket);
 	}
 
+	public int insertPlayer(Player player) {
+		iplDao = new IPLDao1();
+		return iplDao.insertPlayer(player);
+		
+	}
+
+	public int deletePlayer(int idtt) {
+		iplDao = new IPLDao1();
+		return iplDao.deletePlayer(idtt);
+	}
+
 	
 	
 	

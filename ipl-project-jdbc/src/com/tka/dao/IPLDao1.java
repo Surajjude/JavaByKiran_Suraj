@@ -21,11 +21,23 @@ public class IPLDao1 {
 	private ResultSet rs = null;
 	List<Player> db_info = new ArrayList<Player>();
 	
+	private Connection getConnection() {
+		try {
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(url,username,password);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
+	
 	public List<Player> getAllPlayers(){
 		
 		try {
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection(url, username, password);
+			conn = getConnection();
 			ps = conn.prepareStatement("SELECT * FROM players order by id asc");
 			rs = ps.executeQuery();
 			
@@ -43,8 +55,6 @@ public class IPLDao1 {
 			}
 			
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -56,15 +66,12 @@ public class IPLDao1 {
 	public int updateRuns(int id, int runs) {
 		int result=0;
 		try {
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection(url, username, password);
+			conn = getConnection();
 			ps = conn.prepareStatement("update players set run = ? where id = ?");
 			ps.setInt(1,runs);
 			ps.setInt(2, id);
 			result = ps.executeUpdate();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -74,19 +81,51 @@ public class IPLDao1 {
 	public int updateWickets(int idt, int wicket) {
 		int result=0;
 		try {
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection(url, username, password);
+			conn = getConnection();
 			ps = conn.prepareStatement("update players set wicket = ? where id = ?");
 			ps.setInt(1,wicket);
 			ps.setInt(2, idt);
 			result = ps.executeUpdate();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return result;
+	}
+
+	public int insertPlayer(Player player) {
+		int result =0;
+		conn = getConnection();
+		try {
+			ps = conn.prepareStatement("insert into players values (?,?,?,?,?,?)");
+			ps.setInt(1, player.getId());
+			ps.setString(2, player.getpName());
+			ps.setInt(3,player.getJerseyNo());
+			ps.setString(4,player.gettName());
+			ps.setInt(5, player.getRun());
+			ps.setInt(6,player.getWicket());
+			
+			result = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		
+	}
+
+	public int deletePlayer(int idtt) {
+		conn= getConnection();
+		int output=0;
+		try {
+			ps = conn.prepareStatement("delete from players where id = ?");
+			ps.setInt(1, idtt);
+			output = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return output;
 	}
 	
 	
